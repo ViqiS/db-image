@@ -7,8 +7,22 @@ const port = 3001;
 
 app.use(express.json());
 
-app.get('/' , (req, res) => {
-  res.setEncoding('hola!');
+const whiteList = ['http://localhost:3001', 'https://myapp.com'];
+const options = {
+  origin: (origin, callback) => {
+    if (whiteList.includes(origin)|| !origin) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  }
+}
+app.use(cors(options));
+
+
+
+app.get('/api' , (req, res) => {
+  res.send('hola!');
 })
 
 app.listen(port, () => {
