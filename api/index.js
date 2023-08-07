@@ -8,7 +8,7 @@ const port = process.env.PORT ?? 8080;
 
 app.use(express.json());
 
-const whiteList = ['http://localhost:3000', 'https://myapp.com'];
+const whiteList = ['http://localhost:3000', 'https://db-image-zwd5-dev.fl0.io'];
 const options = {
   origin: (origin, callback) => {
     if (whiteList.includes(origin) || !origin) {
