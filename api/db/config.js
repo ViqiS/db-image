@@ -1,16 +1,12 @@
-const { config } = require('./../config/config');
-
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
-
+require('dotenv').config();
 module.exports = {
   development: {
-    url: URI,
+    url: process.env.DATABASE_URL, // Accede a la variable de entorno DATABASE_URL
     dialect: 'postgres',
   },
   production: {
-    url: URI,
+    url: process.env.DATABASE_URL, // Accede a la variable de entorno DATABASE_URL
     dialect: 'postgres',
   }
 }
+

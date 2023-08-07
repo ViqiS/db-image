@@ -11,9 +11,16 @@ class ImageService {
     return newImage;
   }
   async find() {
-    const rta = await models.Image.findAll();
-    return rta;
+    try {
+      const rta = await models.Image.findAll();
+      return rta;
+    } catch (error) {
+      console.error('Error en la consulta find():', error);
+      throw new Error('Error en la consulta find(): ' + error.message);
+    }
   }
+  
+  
 
 async findOne(id) {
   const image = await models.Image.findByPk(id);

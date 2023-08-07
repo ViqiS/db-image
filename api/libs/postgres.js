@@ -1,12 +1,9 @@
+require('dotenv').config();
 const { Client } = require('pg');
 
 async function getConnection() {
   const client = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'viqi',
-    password: 'admin123',
-    database: 'api'
+    connectionString: process.env.DATABASE_URL,
   });
   await client.connect();
   return client;

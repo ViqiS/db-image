@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const IMAGE_TABLE = 'images';
+const IMAGE_TABLE = 'Images';
 
 const ImageSchema = {
   id: {
@@ -19,6 +19,12 @@ const ImageSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW
   },
+  updatedAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    field: 'updated_at',
+    defaultValue: Sequelize.NOW
+  },
   image: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -26,16 +32,14 @@ const ImageSchema = {
 }
 
 class Image extends Model {
-  static associate() {
+  static associate() {}
 
-  }
   static config(sequelize) {
     return {
       sequelize,
-      tableName: IMAGE_TABLE,
+      tableName: IMAGE_TABLE, // Cambia 'Image' a IMAGE_TABLE
       modelName: 'Image',
-      timestamps: false,
-    }
+    };
   }
 }
 

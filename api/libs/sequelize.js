@@ -1,17 +1,29 @@
-const { Sequelize} = require('sequelize');
-const { config } = require('../config/config');
+require('dotenv').config();
+const { Sequelize } = require('sequelize');
 const setupModels = require('../db/models');
 
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config.json')[env];
 
-const sequelize = new Sequelize(URI, {
-  dialect: 'postgres',
-  logging: false,
+let sequelize;
+
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.dbHost,
+    port: config.dbPort,
+    dialect: 'postgres',
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   });
+}
 
-  setupModels(sequelize);
+setupModels(sequelize);
 
-
-  module.exports = sequelize;
+module.exports = sequelize;

@@ -5,9 +5,9 @@ services:
     image: postgres:13
     container_name: dbImage
     environment:
-      - POSTGRES_DB=api
-      - POSTGRES_USER=viqi
-      - POSTGRES_PASSWORD=admin123
+      - POSTGRES_DB=Image
+      - POSTGRES_USER=fl0user
+      - POSTGRES_PASSWORD=2ZkwpAPm9Cox
     ports:
       - 5432:5432
     volumes:
