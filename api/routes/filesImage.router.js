@@ -7,14 +7,19 @@ const validatorHandler = require('../middlewares/validator.handler');
 const router = express.Router();
 const service = new ImageService();
 
+// En el archivo filesImage.router.js
 router.get('/', async (req, res, next) => {
   try {
+    console.log('Obteniendo imágenes...');
     const images = await service.find();
+    console.log('Imágenes encontradas:', images);
     res.json(images);
   } catch (error) {
+    console.error('Error al obtener imágenes:', error);
     next(error);
   }
 });
+
 
 router.get('/:id',
 validatorHandler(getImageSchema, 'params'),
