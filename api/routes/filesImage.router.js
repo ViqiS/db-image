@@ -31,7 +31,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-
 router.get('/:id',
 validatorHandler(getImageSchema, 'params'),
 async (req, res, next) => {
@@ -46,8 +45,8 @@ async (req, res, next) => {
 
 router.post(
   '/',
-  validatorHandler(createImageSchema, 'body'),
   multer({ storage }).single('image'),
+  validatorHandler(createImageSchema, 'body'),
   async (req, res, next) => {
     try {
       const { filename } = req.file;
