@@ -44,30 +44,30 @@ async (req, res, next) => {
   }
 });
 
-router.post('/', 
-multer({ storage }).single('image'), 
-async (req, res, next) => {
-  try {
-    const { filename } = req.file;
-    const { originalname } = req.file;
+router.post(
+  '/',
+  validatorHandler(createImageSchema, 'body')(req, res, next),
+  multer({ storage }).single('image'),
+  async (req, res, next) => {
+    try {
+      const { filename } = req.file;
+      const { originalname } = req.file;
+      
+      // Crear la entrada en la base de datos con el nombre y la URL de la imagen
+      const newImage = await service.create({ name: originalname, image: filename });
+      const imageUrl = `https://db-image-dev.fl0.io/api/v1/uploads/${filename}`;
 
-    // Validar el cuerpo de la solicitud
-    await validatorHandler(createImageSchema, 'body')(req, res, next);
-
-    // Crear la entrada en la base de datos con el nombre y la URL de la imagen
-    const newImage = await service.create({ name: originalname, image: filename });
-    const imageUrl = `https://db-image-dev.fl0.io/api/v1/uploads/${filename}`;
-
-    res.status(201).json({
-      message: 'Imagen cargada y entrada en la base de datos creada con éxito',
-      filename,
-      imageUrl,
-      newImage,
-    });
-  } catch (error) {
-    next(error);
+      res.status(201).json({
+        message: 'Imagen cargada y entrada en la base de datos creada con éxito',
+        filename,
+        imageUrl,
+        newImage,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 
 router.delete('/:id',

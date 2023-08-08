@@ -6,10 +6,8 @@ class ImageService {
 
   async create(data) {
     const newImage = await models.Image.create({
-      name: data.name,
-      image: `https://db-image-dev.fl0.io/api/v1/uploads/${data.image}`,
+      ...data,
     });
-  
     return newImage;
   }
   
