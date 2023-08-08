@@ -46,13 +46,13 @@ async (req, res, next) => {
 
 router.post(
   '/',
-  validatorHandler(createImageSchema, 'body')(req, res, next),
+  validatorHandler(createImageSchema, 'body'),
   multer({ storage }).single('image'),
   async (req, res, next) => {
     try {
       const { filename } = req.file;
       const { originalname } = req.file;
-      
+
       // Crear la entrada en la base de datos con el nombre y la URL de la imagen
       const newImage = await service.create({ name: originalname, image: filename });
       const imageUrl = `https://db-image-dev.fl0.io/api/v1/uploads/${filename}`;
