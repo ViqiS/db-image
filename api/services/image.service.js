@@ -6,10 +6,13 @@ class ImageService {
 
   async create(data) {
     const newImage = await models.Image.create({
-      ...data,
+      name: data.name,
+      image: `https://db-image-dev.fl0.io/api/v1/uploads/${data.image}`,
     });
+  
     return newImage;
   }
+  
   async find() {
     try {
       const rta = await models.Image.findAll();
