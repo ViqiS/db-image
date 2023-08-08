@@ -1,23 +1,12 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const ImageService = require('../services/image.service');
 const { createImageSchema, getImageSchema } = require('../schemas/image.schema');
 const validatorHandler = require('../middlewares/validator.handler');
+const multer = require('multer');
+const upload = multer ({ dest: 'uploads/'});
 
 const router = express.Router();
 const service = new ImageService();
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads'); // Carpeta donde se almacenarán las imágenes
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, uniqueSuffix + ext);
-  },
-});
 
 router.get('/', async (req, res, next) => {
   try {
@@ -43,31 +32,38 @@ async (req, res, next) => {
   }
 });
 
-router.post(
-  '/',
-  multer({ storage }).single('image'),
+/* router.post('/',
   validatorHandler(createImageSchema, 'body'),
   async (req, res, next) => {
-    try {
-      const { filename } = req.file;
-      const { originalname } = req.file;
-
-      // Crear la entrada en la base de datos con el nombre y la URL de la imagen
-      const newImage = await service.create({ name: originalname, image: filename });
-      const imageUrl = `https://db-image-dev.fl0.io/api/v1/uploads/${filename}`;
-
-      res.status(201).json({
-        message: 'Imagen cargada y entrada en la base de datos creada con éxito',
-        filename,
-        imageUrl,
-        newImage,
-      });
-    } catch (error) {
-      next(error);
-    }
+  try {
+    const body = req.body;
+    const newImage = await service.create(body);
+    res.status(201).json({
+      message: 'Imagen cargada desde URL y entrada en la base de datos creada con éxito',
+      newImage,
+    });
+  } catch (error) {
+    next(error);
   }
-);
+}); */
+router.post('/', upload.single('image'), async function (req, res) {
+  console.log('Petición POST recibida en /filesImage');
+  
+  const nameImage = req.body.name;
+  const imageData = req.file;
 
+  console.log('Nombre de la imagen:', nameImage);
+  console.log('Datos de la imagen:', imageData);
+
+  try {
+    const newImage = await service.create({ name: nameImage, image: imageData.filename });
+    console.log('Nueva imagen creada en la base de datos:', newImage);
+    res.status(201).json({ nameImage, imageData, newImage });
+  } catch (error) {
+    console.error('Error al crear nueva imagen:', error);
+    res.status(500).json({ error: 'Error al crear nueva imagen' });
+  }
+});
 
 router.delete('/:id',
   validatorHandler(getImageSchema, 'params'),
