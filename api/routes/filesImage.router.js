@@ -59,13 +59,11 @@ async (req , res, next ) => {
 try {
   const name = req.file.filename;
   const image = req.file.filename; // Cambio aquí: usar el nombre del archivo en lugar de la ruta completa
+  const imageUrl = `https://db-image-dev.fl0.io/uploads/${image}`;
   const newImage = await service.create({
     name: name,
-    image: image,
+    image: imageUrl,
   });
-
-  // Generar la URL completa para la imagen
-  const imageUrl = `https://db-image-dev.fl0.io/uploads/${image}`;
 
   res.status(201).json({
     message: 'Imagen cargada con éxito',
