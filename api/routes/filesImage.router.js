@@ -57,7 +57,7 @@ multerUpload.single('image'),
 validatorHandler(createImageSchema, 'newImage'),
 async (req , res, next ) => { 
 try {
-  const name = req.file.filename;
+  const { name } = req.body;
   const image = req.file.filename; // Cambio aquí: usar el nombre del archivo en lugar de la ruta completa
   const imageUrl = `https://db-image-dev.fl0.io/uploads/${image}`;
   const newImage = await service.create({
