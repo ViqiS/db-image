@@ -57,12 +57,15 @@ async (req, res, next) => {
   validatorHandler(createImageSchema, 'newImage'),
   async (req , res, next ) => { 
   try {
+    console.log('Archivo recibido:', req.file);
+    console.log('Ruta en el servidor:', req.file.path);
     const name = req.file.fieldname;
     const image = req.file.path;
     const newImage = await service.create({
       name: name,
       image: image,
     })
+
     res.status(201).json({
       message: 'Imagen cargada con éxito',
       newImage,
