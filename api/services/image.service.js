@@ -16,7 +16,6 @@ class ImageService {
       const rta = await models.Image.findAll();
       return rta;
     } catch (error) {
-      console.error('Error en la consulta find():', error);
       throw new Error('Error en la consulta find(): ' + error.message);
     }
   }

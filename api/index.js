@@ -26,12 +26,8 @@ app.get('/', (req, res) => {
   res.send('hola!');
 });
 
-// Agrega un mensaje de depuración para verificar que las rutas están siendo configuradas correctamente
-console.log('Configurando rutas...');
 routerApi(app);
 
-// Agrega un mensaje de depuración para verificar que el middleware errorHandler está funcionando
-console.log('Agregando el middleware errorHandler...');
 app.use(errorHandler);
 
 app.listen(port, () => {
