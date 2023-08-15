@@ -22,7 +22,7 @@ const options = {
 };
 
 app.use(cors(options));
-app.use('/', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.get('/', (req, res) => {
