@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const routerApi = require('./routes');
 const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler')
@@ -21,6 +22,8 @@ const options = {
 };
 
 app.use(cors(options));
+app.use('/', express.static(path.join(__dirname, 'uploads')));
+
 
 app.get('/', (req, res) => {
   res.send('hola!');

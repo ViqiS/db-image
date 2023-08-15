@@ -52,27 +52,28 @@ async (req, res, next) => {
   }
 });
 
-  router.post('/',
-  multerUpload.single('image'),
-  validatorHandler(createImageSchema, 'newImage'),
-  async (req , res, next ) => { 
-  try {
-    console.log('Archivo recibido:', req.file);
-    console.log('Ruta en el servidor:', req.file.path);
-    const name = req.file.fieldname;
-    const image = req.file.path;
-    const newImage = await service.create({
-      name: name,
-      image: image,
-    })
+router.post('/',
+multerUpload.single('image'),
+validatorHandler(createImageSchema, 'newImage'),
+async (req , res, next ) => { 
+try {
+  const name = req.file.filename;
+  const image = req.file.filename; // Cambio aquí: usar el nombre del archivo en lugar de la ruta completa
+  const newImage = await service.create({
+    name: name,
+    image: image,
+  });
 
-    res.status(201).json({
-      message: 'Imagen cargada con éxito',
-      newImage,
-    })
-  } catch(error) {
-    next(error)
-  }
+  // Generar la URL completa para la imagen
+  const imageUrl = `https://db-image-dev.fl0.io/uploads/${image}`;
+
+  res.status(201).json({
+    message: 'Imagen cargada con éxito',
+    newImage: { ...newImage.dataValues, image: imageUrl }, // Agregar la URL completa al objeto de respuesta
+  });
+} catch(error) {
+  next(error);
+}
 });
 
 /* PARA QUE EL CLIENTE MODIFIQUE EL NOMBRE (ver)
