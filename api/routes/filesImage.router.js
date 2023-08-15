@@ -15,8 +15,8 @@ const multerUpload = multer({
       const fileExtension = extname(file.originalname)
       const fileNameParts = file.originalname.split(' ');
       const firstWord = fileNameParts.shift();
-      const fileName = firstWord || file.originalname;
-      cb(null, `${fileName}${fileExtension}`);
+      const fileName = firstWord || file.originalname.split('.').slice(0, -1).join('.');
+      cb(null, `${fileName}-${Date.now()}${fileExtension}`);
     }
   }),
   fileFilter: (req, file, cb) => {
