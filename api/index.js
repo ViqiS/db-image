@@ -6,7 +6,7 @@ const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler')
 
 const app = express();
-const port = process.env.PORT ?? 8080;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
@@ -24,9 +24,11 @@ const options = {
 app.use(cors(options));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Manejar solicitudes preflight OPTIONS
+app.options('*', cors(options));
 
 app.get('/', (req, res) => {
-  res.send('hola!');
+  res.send('¡Hola!');
 });
 
 routerApi(app);
@@ -36,5 +38,3 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
-
