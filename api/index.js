@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
-const whiteList = ['http://localhost:3000', 'https://db-image-dev.fl0.io', 'https://image-uploader-eight-henna.vercel.app' ];
+const whiteList = ['http://localhost:3000', 'https://db-image-dev.fl0.io', 'https://image-uploader-project.vercel.app' ];
 const options = {
   origin: (origin, callback) => {
     if (whiteList.includes(origin) || !origin) {
