@@ -20,6 +20,10 @@ const options = {
     }
   }
 };
+app.use(passport.initialize());
+
+passport.use('local', LocalStrategy);
+passport.use(JwtStrategy);
 
 app.use(cors(options));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
