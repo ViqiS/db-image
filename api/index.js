@@ -4,6 +4,10 @@ const path = require('path');
 const routerApi = require('./routes');
 const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler')
+const passport = require('passport');
+
+const LocalStrategy = require('./utils/auth/strategies/local.strategy');
+const JwtStrategy = require('./utils/auth/strategies/jwt.strategy');
 
 const app = express();
 const port = process.env.PORT || 8080;
