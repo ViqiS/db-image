@@ -4,6 +4,8 @@ const path = require('path');
 const routerApi = require('./routes');
 const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler')
+const initializePassport = require('./utils/auth/index'); // Asegúrate de que la ruta sea correcta
+
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -20,7 +22,7 @@ const options = {
     }
   }
 };
-
+initializePassport(app);
 app.use(cors(options));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
