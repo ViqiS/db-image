@@ -1,6 +1,7 @@
-const { Strategy, ExtractJwt } = require('passport-jwt');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const { config } = require('./../../../../config');
+const { config } = require('../../../../config');
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -14,4 +15,3 @@ const JwtStrategy = new Strategy(options, (payload, done) => {
 });
 
 module.exports = JwtStrategy;
-
